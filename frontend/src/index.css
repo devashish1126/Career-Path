@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+/* ── Tailwind v4 Theme Tokens — Cyber Black & Yellow/Amber ─────────────────── */
+@theme {
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  /* Base surfaces */
+  --color-base:     #08090d;
+  --color-surface:  #0d0f15;
+  --color-elevated: #151822;
+  --color-overlay:  #1d212f;
+
+  /* Borders */
+  --color-border:       #272b38;
+  --color-border-muted: #3a3f52;
+
+  /* Accents — Cyber Amber / Yellow */
+  --color-blue:     #f59e0b;
+  --color-blue-h:   #fbbf24;
+  --color-cyan:     #fef08a;
+  --color-violet:   #d97706;
+  --color-violet-h: #f59e0b;
+
+  /* Text */
+  --color-text:        #f3f4f6;
+  --color-text-muted:  #9ca3af;
+  --color-text-subtle: #6b7280;
+
+  /* Status */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error:   #ef4444;
+  --color-amber:   #f59e0b;
+}
+
+/* ── Base Reset ─────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--color-base);
+  color: var(--color-text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Typography Helpers ─────────────────────────────────── */
+.font-display { font-family: var(--font-display); }
+.font-mono    { font-family: var(--font-mono); }
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--color-surface); }
+::-webkit-scrollbar-thumb { background: #374151; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #f59e0b; }
+
+/* ── Smooth transitions ──────────────────────────────────── */
+* { transition-property: color, background-color, border-color, box-shadow, opacity;
+    transition-duration: 150ms; transition-timing-function: cubic-bezier(0.4,0,0.2,1); }
+
+/* ════════════════════════════════════════════════════════
+   FLOWCHART — Fixed Card Grid & Smooth Layout
+   ════════════════════════════════════════════════════════ */
+
+.flow-node-card {
+  min-width: 180px;
+  max-width: 210px;
+  width: 195px;
+  background: var(--color-elevated);
+  border: 1px solid var(--color-border-muted);
+  border-radius: 8px;
+  padding: 12px 14px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-sans);
+}
+
+.flow-node-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 2.5px;
+  background: var(--node-accent, #f59e0b);
+  border-radius: 8px 8px 0 0;
+}
+
+.flow-node-card:hover {
+  border-color: #f59e0b;
+  background: #1c202d;
+  box-shadow: 0 0 0 1px #f59e0b, 0 4px 18px rgba(245, 158, 11, 0.15);
+}
+
+.flow-node-card.done {
+  border-color: var(--color-success);
+  background: #0d1f17;
+}
+.flow-node-card.done::before { background: var(--color-success); }
+
+/* ── Syllabus Drawer Modal ───────────────────────────────── */
+.syllabus-drawer-container {
+  position: fixed; inset: 0; z-index: 500;
+  display: flex; justify-content: flex-end;
+}
+.syllabus-drawer-overlay {
+  position: absolute; inset: 0;
+  background: rgba(8, 9, 13, 0.75);
+  backdrop-filter: blur(4px);
+}
+.syllabus-drawer-content {
+  position: relative; z-index: 1;
+  width: min(580px, 95vw);
+  height: 100vh;
+  background: var(--color-surface);
+  border-left: 1px solid var(--color-border);
+  display: flex; flex-direction: column;
+  box-shadow: -10px 0 30px rgba(0, 0, 0, 0.5);
+  animation: drawerSlide 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes drawerSlide {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+
+/* ── Terminal Card ───────────────────────────────────────── */
+.terminal-card {
+  background: #06070a;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.terminal-bar {
+  display: flex; align-items: center; gap: 6px;
+  padding: 8px 12px;
+  background: var(--color-elevated);
+  border-bottom: 1px solid var(--color-border);
+}
+.terminal-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+.terminal-body {
+  padding: 14px 16px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: #9ca3af;
+  line-height: 1.7;
+}
+
+/* ── Status dot & Spinner ────────────────────────────────── */
+.status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.spinner {
+  width: 20px; height: 20px;
+  border: 2px solid var(--color-border);
+  border-top-color: #f59e0b;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Pulse dot ───────────────────────────────────────────── */
+.pulse-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: #f59e0b;
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.85); }
+}
+
+kbd {
+  display: inline-flex; align-items: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 1px 5px;
+  background: var(--color-overlay);
+  border: 1px solid var(--color-border-muted);
+  border-radius: 4px;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+/* ── Syllabus reveal animation ───────────────────────────── */
+@keyframes syllabusReveal {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0)    scale(1);    }
+}
+
+/* ── Connector beam pulse ─────────────────────────────────── */
+@keyframes beamPulse {
+  0%, 100% { opacity: 0.6; }
+  50%       { opacity: 1;   }
+}
